@@ -1,0 +1,28 @@
+version: "3.2"
+services:
+  mysql:
+    image: mysql:5.6.40
+    environment:
+      MYSQL_ROOT_PASSWORD: gO0l1!32mN
+  web:
+    build: .
+    ports:
+      - "9000:8080"
+    volumes: # to be deleted before delivering the task to fix permissions issue
+      - "./:/var/www/"
+    environment:
+      APP_NAME: Parenthq
+      APP_ENV: local
+      APP_KEY: Hgsm*235lS0+8iolSdHe2#4fdladf
+      APP_DEBUG: "true"
+      APP_URL: http://localhost:9000
+      APP_TIMEZONE: UTC
+      LOG_CHANNEL: stack
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: parenthq
+      DB_USERNAME: root
+      DB_PASSWORD: gO0l1!32mN
+      CACHE_DRIVER: file
+      QUEUE_CONNECTION: sync
