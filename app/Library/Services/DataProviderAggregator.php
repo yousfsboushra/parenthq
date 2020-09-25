@@ -10,12 +10,18 @@ class DataProviderAggregator
 
     public function __construct(){
         $this->providers = array(
-            new DataProviderX(),
-            new DataProviderY(),
+            'DataProviderX' => new DataProviderX(),
+            'DataProviderY' => new DataProviderY(),
         );
     }
 
     public function get(){
         return $this->providers;
+    }
+
+    public function generateData($length){
+        foreach($this->providers as $provider){
+            $provider->generateData($length);
+        }
     }
 }

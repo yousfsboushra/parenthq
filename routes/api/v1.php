@@ -13,4 +13,5 @@
 |
 */
 
+Route::get('users/generate', 'UserController@generate');
 Route::get('users', 'UserController@index');

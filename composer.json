@@ -6,6 +6,7 @@
     "type": "project",
     "require": {
         "php": "^7.3",
+        "halaxa/json-machine": "^0.3.3",
         "laravel/lumen-framework": "^8.0"
     },
     "require-dev": {
