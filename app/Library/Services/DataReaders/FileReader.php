@@ -21,6 +21,6 @@ class FileReader implements DataReader
             }
             fclose($fh);
         }
-        return $content;
+        return json_decode($content)->users;
     }
 }

@@ -21,16 +21,21 @@ class UserController extends BaseController
         $providers = $this->providersAggregator->get();
         $filters = $this->getFilters($request);
 
-        $users = array();
+        echo "[";
+        $c = 0;
         foreach($providers as $provider){
-            $tmpUsers = $provider->getData();
             foreach($provider->getData() as $user){
                 if($this->isUserPassFilters($user, $filters)){
-                    $users[] = $user;
+                    if($c > 0){
+                        echo ",";
+                    }
+                    echo json_encode($user);
+                    flush();
+                    $c++;
                 }
             }
         }
-        return $this->formatter->format($users);
+        echo "]";
     }
 
     public function generate(Request $request){

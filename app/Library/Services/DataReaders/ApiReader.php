@@ -14,7 +14,7 @@ class ApiReader implements DataReader
     }
 
     public function read(){
-        $content = "";
+        $content = array();
         $options = array(
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_HEADER => false,
@@ -27,9 +27,9 @@ class ApiReader implements DataReader
         $result = curl_exec($ch);
         $info = curl_getinfo($ch);
         if($info['http_code'] == 200){
-            $content = $result;
+            $content = json_decode($result);
         }
         curl_close($ch);
-        return $content;
+        return $content->users;
     }
 }

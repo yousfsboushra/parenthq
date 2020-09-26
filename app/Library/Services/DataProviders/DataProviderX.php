@@ -4,18 +4,15 @@ namespace App\Library\Services\DataProviders;
 use App\Library\Services\Contracts\DataProvider;
 use App\Library\Services\DataReaders\FileReader;
 use App\Library\Services\DataReaders\JsonMachineFileReader;
-use App\Library\Services\DataParsers\JsonParser;
   
 class DataProviderX implements DataProvider
 {
   private $name = "DataProviderX";
   private $reader;
-  private $parser;
   private $status;
 
   public function __construct(){
-    $this->reader = new JsonMachineFileReader('generatedDataX100.json');
-    $this->parser = new JsonParser();
+    $this->reader = new JsonMachineFileReader('DataProviderX.json');
     $this->status = array(
       1 => 'authorised',
       2 => 'decline',
@@ -28,19 +25,25 @@ class DataProviderX implements DataProvider
   }
 
   public function getData(){
-    $data = $this->reader->read();
-    // $data = $this->parser->parse($this->reader->read());
-    
     $users = array();
-    if(!empty($data)){
-      foreach($data as $user){
-        $users[] = $this->formatUser($user);
-      }
+    foreach($this->reader->read() as $user){
+      $users[] = $this->formatUser($user);
     }
     return $users;
   }
 
   private function formatUser($user){
+    if(is_array($user)){
+      return array(
+        'id' => $user['parentIdentification'],
+        'email' => $user['parentEmail'],
+        'currency' => $user['Currency'],
+        'balance' => $user['parentAmount'],
+        'created_at' => $user['registerationDate'],
+        'status' => $this->status[$user['statusCode']],
+        'provider' => 'DataProviderX'
+      );
+    }
     return array(
       'id' => $user->parentIdentification,
       'email' => $user->parentEmail,

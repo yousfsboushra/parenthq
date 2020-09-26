@@ -17,7 +17,7 @@ class JsonMachineFileReader implements DataReader
         if (file_exists($this->filepath)) {
             $jsonStream = JsonMachine::fromFile($this->filepath, "/users");
             foreach ($jsonStream as $name => $item) {
-                $data[] = (object)$item;
+                $data[] = $item;
             }
         }
         return $data;

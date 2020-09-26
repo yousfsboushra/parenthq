@@ -6,19 +6,16 @@ namespace App\Library\Services\DataProviders;
 use App\Library\Services\Contracts\DataProvider;
 use App\Library\Services\DataReaders\FileReader;
 use App\Library\Services\DataReaders\JsonMachineFileReader;
-use App\Library\Services\DataParsers\JsonParser;
   
 class DataProviderY implements DataProvider
 {
 
   private $name = "DataProviderY";
   private $reader;
-  private $parser;
   private $status;
 
   public function __construct(){
-    $this->reader = new JsonMachineFileReader('generatedDataY100.json');
-    $this->parser = new JsonParser();
+    $this->reader = new JsonMachineFileReader('DataProviderY.json');
     $this->status = array(
       100 => 'authorised',
       200 => 'decline',
@@ -31,19 +28,26 @@ class DataProviderY implements DataProvider
   }
 
   public function getData(){
-    $data = $this->reader->read();
-    // $data = $this->parser->parse($this->reader->read());
-    
     $users = array();
-    if(!empty($data)){
-      foreach($data as $user){
-        $users[] = $this->formatUser($user);
-      }
+    foreach($this->reader->read() as $user){
+      $users[] = $this->formatUser($user);
     }
     return $users;
   }
 
   private function formatUser($user){
+    if(is_array($user)){
+      $date = \DateTime::createFromFormat("d/m/Y", $user['created_at']);
+      return array(
+        'id' => $user['id'],
+        'email' => $user['email'],
+        'currency' => $user['currency'],
+        'balance' => $user['balance'],
+        'created_at' => $date->format("Y-m-d"),
+        'status' => $this->status[$user['status']],
+        'provider' => 'DataProviderY'
+      );
+    }
     $date = \DateTime::createFromFormat("d/m/Y", $user->created_at);
     return array(
       'id' => $user->id,
